@@ -43,14 +43,19 @@ public interface Linguagem {
 		}
 	}
 
+	// Alterei o SE
 	class Se implements Comando {
 		private Bool condicao;
 		private Comando entao;
+		private Bool senaose;
+		private Comando entaosenao;
 		private Comando senao;
 
-		public Se(Bool condicao, Comando entao, Comando senao) {
+		public Se(Bool condicao, Comando entao, Bool senaose, Comando entaosenao, Comando senao) {
 			this.condicao = condicao;
 			this.entao = entao;
+			this.senaose = senaose;
+			this.entaosenao = entaosenao;
 			this.senao = senao;
 		}
 
@@ -58,6 +63,8 @@ public interface Linguagem {
 		public void execute() {
 			if (condicao.getValor())
 				entao.execute();
+			else if (senaose.getValor())
+				entaosenao.execute();
 			else
 				senao.execute();
 		}
@@ -82,6 +89,48 @@ public interface Linguagem {
 			System.out.println(exp.getValor());
 		}
 	}
+	
+	class Caso implements Comando {	
+		private Expressao opcao;
+		private Comando faca;
+		
+		public Caso(Expressao opcao, Comando faca){
+			this.opcao = opcao;
+			this.faca = faca;
+		}
+		
+		@Override
+		public void execute(){
+			faca.execute();
+		}
+	}
+	
+	class Escolha implements Comando {		
+		private Expressao variavel;
+		private List<Caso> opcoes;
+		private Comando padrao;
+		
+		public Escolha(Expressao variavel, Comando padrao){
+			this.variavel = variavel;
+			opcoes = new ArrayList<>();
+			this.padrao = padrao;
+		}
+		
+		public void AdicionarCaso(Caso caso){
+			opcoes.add(caso);
+		}
+		
+		@Override
+		public void execute(){
+			for(Caso caso: opcoes){
+				if(caso.opcao.getValor() == variavel.getValor()){
+					caso.execute();
+					return;
+				}
+			}
+			padrao.execute();
+		}
+	}
 
 	class Enquanto implements Comando {
 		private Bool condicao;
@@ -98,6 +147,30 @@ public interface Linguagem {
 				faca.execute();
 			}
 		}
+	}
+	
+	class Para implements Comando {
+		private String id;
+		private Expressao de;
+		private Expressao ate;
+		private Comando faca;
+		
+		public Para(String id, Expressao de, Expressao ate, Comando faca){
+			this.id = id;
+			this.de = de;
+			this.ate = ate;
+			this.faca = faca;
+		}
+		
+		//para id de expressao ate expressao faca comando
+		@Override
+		public void execute() {
+			for(int i = de.getValor(); i <= ate.getValor(); i++ ){
+				ambiente.put(id, new Integer(i));
+				faca.execute();
+			}
+		}
+		
 	}
 
 	class Exiba implements Comando {
@@ -216,6 +289,30 @@ public interface Linguagem {
 			return esq.getValor() * dir.getValor();
 		}
 	}
+	
+	class ExpDiv extends ExpBin{
+		public ExpDiv (Expressao esq, Expressao dir) {
+			super(esq, dir);
+		}
+		
+		@Override
+		public int getValor() {
+			return esq.getValor() / dir.getValor();
+		}
+		
+	}
+	
+	class ExpExpon extends ExpBin{
+		public ExpExpon(Expressao esq, Expressao dir) {
+			super(esq, dir);
+		}
+		
+		@Override
+		public int getValor() {
+			return (int)Math.pow(esq.getValor(), dir.getValor());
+		}
+		
+	}
 
 	class Booleano implements Bool {
 		private boolean valor;
@@ -263,6 +360,29 @@ public interface Linguagem {
 			return esq.getValor() <= dir.getValor();
 		}
 	}
+	
+	public class ExpMaiorIgual extends ExpRel {
+		public ExpMaiorIgual (Expressao esq, Expressao dir) {
+			super(esq, dir);
+		}
+		
+		@Override
+		public boolean getValor() {
+			return esq.getValor() >= dir.getValor();
+		}
+		
+	}
+	
+	public class ExpDiferente extends ExpRel {
+		public ExpDiferente(Expressao esq, Expressao dir) {
+			super(esq, dir);
+		}
+
+		@Override
+		public boolean getValor() {
+			return esq.getValor() != dir.getValor();
+		}
+	}
 
 	public class NaoLogico implements Bool {
 		private Bool b;
@@ -291,4 +411,36 @@ public interface Linguagem {
 			return esq.getValor() && dir.getValor();
 		}
 	}
+	
+	public class OuLogico implements Bool {
+		private Bool esq;
+		private Bool dir;
+		
+		public OuLogico(Bool esq, Bool dir) {
+			this.esq = esq;
+			this.dir = dir;
+		}
+		
+		@Override
+		public boolean getValor() {
+			return esq.getValor() || dir.getValor();
+		}		
+	}
+	
+	public class XorLogico implements Bool {
+		private Bool esq;
+		private Bool dir;
+		
+		public XorLogico(Bool esq, Bool dir) {
+			this.esq = esq;
+			this.dir = dir;
+		}
+		
+		@Override
+		public boolean getValor() {
+			return (!esq.getValor() && dir.getValor()) || (esq.getValor() && !dir.getValor());
+		}
+		
+	}
 }
+
