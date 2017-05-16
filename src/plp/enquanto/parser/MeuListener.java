@@ -39,9 +39,16 @@ public class MeuListener extends EnquantoBaseListener {
 
 	@Override
 	public void exitSe(final EnquantoParser.SeContext ctx) {
-		final Bool condicao = (Bool) getValue(ctx.bool());
+		final Bool condicao = (Bool) getValue(ctx.bool(0));
 		final Comando entao = (Comando) getValue(ctx.comando(0));
-		final Comando senao = (Comando) getValue(ctx.comando(1));
+		Bool senaose = new Booleano(false);
+		Comando senao = (Comando) getValue(ctx.comando(1));
+		Comando entaosenao = skip;
+		if (ctx.bool(1) != null) {
+			senaose = (Bool) getValue(ctx.bool(1));
+			entaosenao = (Comando) getValue(ctx.comando(1));
+			senao = (Comando) getValue(ctx.comando(2));
+		}
 		setValue(ctx, new Se(condicao, entao, senao));
 	}
 
@@ -113,6 +120,12 @@ public class MeuListener extends EnquantoBaseListener {
 		case "-":
 			exp = new ExpSub(esq, dir);
 			break;
+		case "/":
+			exp = new ExpDiv(esq, dir);
+			break;
+		case "^":
+			exp = new ExpExpon(esq, dir);
+			break;
 		default:
 			exp = new ExpSoma(esq, dir);
 		}
@@ -124,6 +137,25 @@ public class MeuListener extends EnquantoBaseListener {
 		final Bool condicao = (Bool) getValue(ctx.bool());
 		final Comando comando = (Comando) getValue(ctx.comando());
 		setValue(ctx, new Enquanto(condicao, comando));
+	}
+	
+	@Override
+	public void exitPara(final EnquantoParser.ParaContext ctx) {
+		final String id = ctx.ID().getText();
+		final Expressao de = (Expressao) getValue(ctx.expressao(0));
+		final Expressao ate = (Expressao) getValue(ctx.expressao(1));
+		final Comando faca = (Comando) getValue(ctx.comando());
+		setValue(ctx, new Para(id, de, ate, faca));
+	};
+	
+	@Override
+	public void exitEscolha(final EnquantoParser.EscolhaContext ctx){
+		final Expressao variavel = (Expressao) getValue(ctx.expressao(0));
+		final Comando padrao = (Comando) getValue(ctx.comando(ctx.comando().size()-1)); 
+		Escolha escolha = new Escolha(variavel, padrao);
+		for (int i = 0; i < ctx.expressao().size(); i++) 		
+			escolha.AdicionarCaso(new Caso((Expressao) getValue(ctx.expressao(i+1)), (Comando) getValue(ctx.comando(i))));
+		setValue(ctx, escolha);
 	}
 
 	@Override
@@ -142,6 +174,20 @@ public class MeuListener extends EnquantoBaseListener {
 	public void exitNaoLogico(final EnquantoParser.NaoLogicoContext ctx) {
 		final Bool b = (Bool) getValue(ctx.bool());
 		setValue(ctx, new NaoLogico(b));
+	}
+	
+	@Override
+	public void exitOuLogico(final EnquantoParser.OuLogicoContext ctx) {
+		final Bool esq = (Bool) getValue(ctx.bool(0));
+		final Bool dir = (Bool) getValue(ctx.bool(1));
+		setValue(ctx, new OuLogico(esq, dir));	
+	}
+	
+	@Override
+	public void exitXorLogico(final EnquantoParser.XorLogicoContext ctx) {
+		final Bool esq = (Bool) getValue(ctx.bool(0));
+		final Bool dir = (Bool) getValue(ctx.bool(1));
+		setValue(ctx, new XorLogico(esq, dir));	
 	}
 
 	@Override
@@ -168,6 +214,12 @@ public class MeuListener extends EnquantoBaseListener {
 			break;
 		case "<=":
 			exp = new ExpMenorIgual(esq, dir);
+			break;
+		case ">=":
+			exp = new ExpMaiorIgual(esq, dir);
+			break;
+		case "<>":
+			exp = new ExpDiferente(esq, dir);
 			break;
 		default:
 			exp = new ExpIgual(esq, dir);
