@@ -155,12 +155,59 @@ public interface EnquantoListener extends ParseTreeListener {
 	 * Enter a parse tree produced by {@link EnquantoParser#eLogico}.
 	 * @param ctx the parse tree
 	 */
+	void enterPara(@NotNull EnquantoParser.ParaContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EnquantoParser#para}.
+	 * @param ctx the parse tree
+	 */
+	void exitPara(@NotNull EnquantoParser.ParaContext ctx);
+	
+	/**
+	 * Enter a parse tree produced by {@link EnquantoParser#escolha}.
+	 * @param ctx the parse tree
+	 */
+	void enterEscolha(@NotNull EnquantoParser.EscolhaContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EnquantoParser#escolha}.
+	 * @param ctx the parse tree
+	 */
+	void exitEscolha(@NotNull EnquantoParser.EscolhaContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link EnquantoParser#eLogico}.
+	 * @param ctx the parse tree
+	 */
 	void enterELogico(@NotNull EnquantoParser.ELogicoContext ctx);
 	/**
 	 * Exit a parse tree produced by {@link EnquantoParser#eLogico}.
 	 * @param ctx the parse tree
 	 */
 	void exitELogico(@NotNull EnquantoParser.ELogicoContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link EnquantoParser#boolPar}.
+	 * @param ctx the parse tree
+	 */
+	void enterOuLogico(@NotNull EnquantoParser.OuLogicoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EnquantoParser#ouLogico}.
+	 * @param ctx the parse tree
+	 */
+	
+	void exitOuLogico(@NotNull EnquantoParser.OuLogicoContext ctx);
+	
+	/**
+	 * Exit a parse tree produced by {@link EnquantoParser#XorLogico}.
+	 * @param ctx the parse tree
+	 */
+	
+	void enterXorLogico(@NotNull EnquantoParser.XorLogicoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EnquantoParser#XorLogico}.
+	 * @param ctx the parse tree
+	 */
+	
+	void exitXorLogico(@NotNull EnquantoParser.XorLogicoContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link EnquantoParser#boolPar}.

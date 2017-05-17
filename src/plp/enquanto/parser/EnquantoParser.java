@@ -199,6 +199,56 @@ public class EnquantoParser extends Parser {
 			if ( listener instanceof EnquantoListener ) ((EnquantoListener)listener).exitEnquanto(this);
 		}
 	}
+	
+	public static class ParaContext extends ComandoContext {
+		public TerminalNode ID() { return getToken(EnquantoParser.ID, 0); }
+		public List<ExpressaoContext> expressao() {
+			return getRuleContexts(ExpressaoContext.class);
+		}
+		public ExpressaoContext expressao(int i) {
+			return getRuleContext(ExpressaoContext.class,i);
+		}
+		public ComandoContext comando() {
+			return getRuleContext(ComandoContext.class,0);
+		}
+		public ParaContext(ComandoContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EnquantoListener ) ((EnquantoListener)listener).enterPara(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EnquantoListener ) ((EnquantoListener)listener).exitPara(this);
+		}
+	}
+	
+	public static class EscolhaContext extends ComandoContext {
+		public ComandoContext comando(int i) {
+			return getRuleContext(ComandoContext.class,0);
+		}
+		public List<ComandoContext> comando(){
+			return getRuleContexts(ComandoContext.class);
+		}
+		public ExpressaoContext expressao(int i) {
+			return getRuleContext(ExpressaoContext.class,i);
+		}
+		public List<ExpressaoContext> expressao(){
+			return getRuleContexts(ExpressaoContext.class);
+		}
+		public EscolhaContext(ComandoContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EnquantoListener ) ((EnquantoListener)listener).enterEscolha(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EnquantoListener ) ((EnquantoListener)listener).exitEscolha(this);
+		}
+	}
+	
+	
+	
+	
 	public static class ExibaContext extends ComandoContext {
 		public TerminalNode Texto() { return getToken(EnquantoParser.Texto, 0); }
 		public ExibaContext(ComandoContext ctx) { copyFrom(ctx); }
@@ -212,14 +262,17 @@ public class EnquantoParser extends Parser {
 		}
 	}
 	public static class SeContext extends ComandoContext {
-		public BoolContext bool() {
-			return getRuleContext(BoolContext.class,0);
+		public List<BoolContext> bool() {
+			return getRuleContexts(BoolContext.class);
 		}
-		public ComandoContext comando(int i) {
-			return getRuleContext(ComandoContext.class,i);
+		public BoolContext bool(int i) {
+			return getRuleContext(BoolContext.class,i);
 		}
 		public List<ComandoContext> comando() {
 			return getRuleContexts(ComandoContext.class);
+		}
+		public ComandoContext comando(int i) {
+			return getRuleContext(ComandoContext.class,i);
 		}
 		public SeContext(ComandoContext ctx) { copyFrom(ctx); }
 		@Override
@@ -592,6 +645,41 @@ public class EnquantoParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof EnquantoListener ) ((EnquantoListener)listener).exitELogico(this);
+		}
+	}
+	public static class OuLogicoContext extends BoolContext {
+		public List<BoolContext> bool() {
+			return getRuleContexts(BoolContext.class);
+		}
+		public BoolContext bool(int i) {
+			return getRuleContext(BoolContext.class,i);
+		}
+		public OuLogicoContext(BoolContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EnquantoListener ) ((EnquantoListener)listener).enterOuLogico(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EnquantoListener ) ((EnquantoListener)listener).exitOuLogico(this);
+		}
+	}
+	
+	public static class XorLogicoContext extends BoolContext {
+		public List<BoolContext> bool() {
+			return getRuleContexts(BoolContext.class);
+		}
+		public BoolContext bool(int i) {
+			return getRuleContext(BoolContext.class,i);
+		}
+		public XorLogicoContext(BoolContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EnquantoListener ) ((EnquantoListener)listener).enterXorLogico(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EnquantoListener ) ((EnquantoListener)listener).exitXorLogico(this);
 		}
 	}
 	public static class NaoLogicoContext extends BoolContext {

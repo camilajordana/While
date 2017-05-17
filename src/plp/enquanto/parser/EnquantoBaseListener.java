@@ -186,6 +186,32 @@ public class EnquantoBaseListener implements EnquantoListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
+	@Override public void enterPara(@NotNull EnquantoParser.ParaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitPara(@NotNull EnquantoParser.ParaContext ctx) { }
+	
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterEscolha(@NotNull EnquantoParser.EscolhaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitEscolha(@NotNull EnquantoParser.EscolhaContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
 	@Override public void enterELogico(@NotNull EnquantoParser.ELogicoContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -199,6 +225,34 @@ public class EnquantoBaseListener implements EnquantoListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
+	@Override public void enterOuLogico(@NotNull EnquantoParser.OuLogicoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitOuLogico(@NotNull EnquantoParser.OuLogicoContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	
+	@Override public void enterXorLogico(@NotNull EnquantoParser.XorLogicoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitXorLogico(@NotNull EnquantoParser.XorLogicoContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+
 	@Override public void enterBoolPar(@NotNull EnquantoParser.BoolParContext ctx) { }
 	/**
 	 * {@inheritDoc}
